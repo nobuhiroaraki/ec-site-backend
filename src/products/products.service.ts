@@ -1,9 +1,12 @@
 import { ProductRepository } from './product.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from 'src/entities/product.entity';
+import { CreateProductDto } from './dto/create-product.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ProductsService {
+  private products: Product[] = [];
   constructor(private readonly productRepository: ProductRepository) {}
   async findAll(): Promise<Product[]> {
     return await this.productRepository.find();
@@ -17,8 +20,8 @@ export class ProductsService {
     return foundProduct;
   }
 
-  create() {
-    return;
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+    return await this.productRepository.createProduct(createProductDto);
   }
 
   async updateStockNum(id: string, updateNum: number): Promise<Product> {
