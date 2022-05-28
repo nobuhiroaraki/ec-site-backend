@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   ParseUUIDPipe,
   Patch,
   Post,
@@ -33,11 +34,14 @@ export class ProductsController {
     return;
   }
 
-  //商品情報の更新時(まずは購入ボタン押下時にstockから引く？)
+  //商品数の更新時
   //createしたユーザーだけ行えるようにする
   @Patch()
-  update() {
-    return;
+  async updateStockNum(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Param('updateNum', ParseIntPipe) updateNum: number,
+  ): Promise<Product> {
+    return await this.productsService.updateStockNum(id, updateNum);
   }
 
   //商品削除時

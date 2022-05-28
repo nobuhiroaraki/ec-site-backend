@@ -21,8 +21,11 @@ export class ProductsService {
     return;
   }
 
-  update() {
-    return;
+  async updateStockNum(id: string, updateNum: number): Promise<Product> {
+    const product = await this.findById(id);
+    product.stock = product.stock + updateNum;
+    await this.productRepository.save(product);
+    return product;
   }
 
   async delete(id: string): Promise<void> {
