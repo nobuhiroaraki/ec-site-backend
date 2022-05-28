@@ -1,5 +1,13 @@
 import { ProductsService } from './products.service';
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { Product } from 'src/entities/product.entity';
 
 @Controller('products')
@@ -13,9 +21,9 @@ export class ProductsController {
   }
 
   //商品詳細ページ表示時
-  @Get()
-  findById() {
-    return;
+  @Get(':id') //idをpathとして受け取る(:を入れると可変にできる)ParseUUIDPipeでidをuuidに変換
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Product> {
+    return await this.productsService.findById(id);
   }
 
   //商品登録時
