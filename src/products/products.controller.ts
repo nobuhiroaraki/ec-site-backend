@@ -43,7 +43,7 @@ export class ProductsController {
   //商品削除時
   //createしたユーザーだけ行えるようにする
   @Delete()
-  delete() {
-    return;
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    await this.productsService.delete(id);
   }
 }
