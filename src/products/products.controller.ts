@@ -1,5 +1,6 @@
 import { ProductsService } from './products.service';
 import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Product } from 'src/entities/product.entity';
 
 @Controller('products')
 export class ProductsController {
@@ -7,8 +8,8 @@ export class ProductsController {
 
   //商品一覧ページ表示時
   @Get()
-  findAll() {
-    return;
+  async findAll(): Promise<Product[]> {
+    return await this.productsService.findAll();
   }
 
   //商品詳細ページ表示時
