@@ -9,9 +9,11 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { Product } from 'src/entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -32,13 +34,15 @@ export class ProductsController {
   //商品登録時
   //ログインしないとできないようにする
   @Post()
+  @UseGuards(JwtAuthGuard)
   async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return await this.productsService.create(createProductDto);
   }
 
   //商品数の更新時
   //createしたユーザーだけ行えるようにする
-  @Patch()
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   async updateStockNum(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('updateNum', ParseIntPipe) updateNum: number,
@@ -48,7 +52,8 @@ export class ProductsController {
 
   //商品削除時
   //createしたユーザーだけ行えるようにする
-  @Delete()
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.productsService.delete(id);
   }
