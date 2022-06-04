@@ -14,7 +14,7 @@ import { JwtStrategy } from './jwt.strategy';
     //デフォルトの認証方法をjwtに設定
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: 'secretkey123',
+      secret: 'secretKey123',
       signOptions: {
         expiresIn: 3600, //JWTの有効期限(秒)
       },
