@@ -1,6 +1,7 @@
 import { ProductsService } from './products.service';
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -10,6 +11,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Product } from 'src/entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -18,6 +20,7 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from 'src/entities/user.entity';
 
 @Controller('products')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
