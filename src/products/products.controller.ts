@@ -14,6 +14,8 @@ import {
 import { Product } from 'src/entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { User } from 'src/entities/user.entity';
 
 @Controller('products')
 export class ProductsController {
@@ -35,8 +37,11 @@ export class ProductsController {
   //ログインしないとできないようにする
   @Post()
   @UseGuards(JwtAuthGuard)
-  async create(@Body() createProductDto: CreateProductDto): Promise<Product> {
-    return await this.productsService.create(createProductDto);
+  async create(
+    @Body() createProductDto: CreateProductDto,
+    @GetUser() user: User,
+  ): Promise<Product> {
+    return await this.productsService.create(createProductDto, user);
   }
 
   //商品数の更新時
