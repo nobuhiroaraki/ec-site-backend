@@ -62,7 +62,10 @@ export class ProductsController {
   //createしたユーザーだけ行えるようにする
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    await this.productsService.delete(id);
+  async delete(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User,
+  ): Promise<void> {
+    await this.productsService.delete(id, user);
   }
 }

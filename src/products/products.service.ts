@@ -1,5 +1,9 @@
 import { ProductRepository } from './product.repository';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Product } from 'src/entities/product.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { v4 as uuid } from 'uuid';
@@ -35,7 +39,11 @@ export class ProductsService {
     return product;
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, user: User): Promise<void> {
+    const product = await this.findById(id);
+    if (product.userId !== user.id) {
+      throw new BadRequestException('削除できるのは自分の商品だけです');
+    }
     await this.productRepository.delete({ id });
   }
 }
